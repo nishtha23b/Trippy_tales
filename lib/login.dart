@@ -9,6 +9,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  String _email;
+  String _password;
+
   bool _rememberMe = false;
 
   Widget _buildEmailTF() {
@@ -200,13 +203,13 @@ class _LoginScreenState extends State<LoginScreen> {
           _buildSocialBtn(
                 () => print('Login with Facebook'),
             AssetImage(
-              'assets/facebook.png',
+              'assests/facebook.png',
             ),
           ),
           _buildSocialBtn(
                 () => print('Login with Google'),
             AssetImage(
-              'assets/google.jpg',
+              'assests/google.jpg',
             ),
           ),
         ],

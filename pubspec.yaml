@@ -26,7 +26,8 @@ dependencies:
   flutter_tts: ^0.9.1
   transformer_page_view: ^0.1.6
   font_awesome_flutter: ^8.5.0
-
+  firebase_auth: ^0.14.0+5
+  cloud_firestore: ^0.12.9+4
 
 
 dev_dependencies:
@@ -53,7 +54,7 @@ flutter:
     - beach.png
     - day.png
     - facebook.png
-    - google.png
+    - google.jpg
     - hotel0.png
     - hotel1.png
     - hotel2.png

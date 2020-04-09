@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:trippy_tales/onboarding.dart';
+import 'login.dart';
+import 'signup.dart';
 void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -14,6 +16,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: SplashScreen(),
+      routes: <String ,WidgetBuilder>{
+        '/signup':(BuildContext context)=>new SignUp(),
+        '/login':(BuildContext context)=> new LoginScreen(),
+      },
     );
   }
 }

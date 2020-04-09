@@ -12,7 +12,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'TRIPPY TALES',
       theme: ThemeData(
-
         primarySwatch: Colors.blue,
       ),
       home: SplashScreen(),

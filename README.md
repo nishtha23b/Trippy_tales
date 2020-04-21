@@ -1,6 +1,6 @@
 # trippy_tales
 
-A new Flutter application.
+A flutter ans fire base based travel application with text to speech conversion and custom schedule option.
 
 ## Getting Started
 

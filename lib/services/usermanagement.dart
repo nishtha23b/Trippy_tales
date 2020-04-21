@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 
 class UserManagement{
-  storeNewUser(user,context){
-    Firestore.instance.collection('/users').add({
-      'email':user.email,
-      'uid':user.uid
+  storeNewUser(currentUser,context){
+    Firestore.instance.collection('/users').document(currentUser.uid).setData({
+      'email':currentUser.email,
+      'uid':currentUser.uid
     }).then((value){
       Navigator.of(context).pop();
       Navigator.of(context).pushReplacementNamed('/homepage');

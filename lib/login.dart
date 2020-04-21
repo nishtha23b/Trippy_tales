@@ -1,18 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:trippy_tales/utilities2.dart' show kBoxDecorationStyle, kHintTextStyle, kLabelStyle;
 import 'package:trippy_tales/homepage.dart';
+import 'package:trippy_tales/utilities2.dart' show kBoxDecorationStyle, kHintTextStyle, kLabelStyle;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginScreen extends StatefulWidget {
+
+  LoginScreen({Key key}) : super(key: key);
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String _email;
-  String _password;
 
   bool _rememberMe = false;
+
+  TextEditingController emailInputController;
+  TextEditingController pwdInputController;
+
+
+  String emailValidator(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      return 'Email format is invalid';
+    } else {
+      return null;
+    }
+  }
+
+  String pwdValidator(String value) {
+    if (value.length < 8) {
+      return 'Password must be longer than 8 characters';
+    } else {
+      return null;
+    }
+  }
+
+
+  @override
+  initState() {
+    emailInputController = new TextEditingController();
+    pwdInputController = new TextEditingController();
+    super.initState();
+  }
 
   Widget _buildEmailTF() {
     return Column(
@@ -27,7 +60,9 @@ class _LoginScreenState extends State<LoginScreen> {
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: 60.0,
-          child: TextField(
+          child: TextFormField(
+            controller: emailInputController,
+            validator: emailValidator,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
               color: Colors.white,
@@ -42,6 +77,10 @@ class _LoginScreenState extends State<LoginScreen> {
               hintText: 'Enter your Email',
               hintStyle: kHintTextStyle,
             ),
+            onChanged: (value){
+              setState(() {
+              });
+            },
           ),
         ),
       ],
@@ -61,7 +100,9 @@ class _LoginScreenState extends State<LoginScreen> {
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: 60.0,
-          child: TextField(
+          child: TextFormField(
+            controller: pwdInputController,
+            validator: pwdValidator,
             obscureText: true,
             style: TextStyle(
               color: Colors.white,
@@ -76,6 +117,11 @@ class _LoginScreenState extends State<LoginScreen> {
               hintText: 'Enter your Password',
               hintStyle: kHintTextStyle,
             ),
+            onChanged: (value){
+              setState(() {
+
+              });
+            },
           ),
         ),
       ],
@@ -130,8 +176,29 @@ class _LoginScreenState extends State<LoginScreen> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (BuildContext context) => HomeScreen()));
+            FirebaseAuth.instance
+                .signInWithEmailAndPassword(
+                email: emailInputController.text,
+                password: pwdInputController.text)
+                .then((currentUser) => Firestore.instance
+                .collection("users")
+                .document(currentUser.uid)
+                .get()
+                .then((DocumentSnapshot result) =>
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HomeScreen(
+                          uid: currentUser.uid,
+                        ))))
+                .catchError((err) => print(err)))
+                .catchError((err) => print(err));
+
+//          FirebaseAuth.instance.signInWithEmailAndPassword(
+//              email: _email,
+//              password: _password).then((AuthResult user){
+//                 Navigator.of(context).pushReplacementNamed('/homepage');
+//              }).catchError((e){});
       },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -219,7 +286,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildSignupBtn() {
     return GestureDetector(
-      onTap: () => print('Sign Up Button Pressed'),
+      onTap: () {
+        Navigator.of(context).pushNamed('/signup');
+      },
       child: RichText(
         text: TextSpan(
           children: [

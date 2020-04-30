@@ -13,7 +13,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   bool _rememberMe = false;
 
   TextEditingController emailInputController;
@@ -182,15 +181,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 password: pwdInputController.text)
                 .then((currentUser) => Firestore.instance
                 .collection("users")
-                .document(currentUser.uid)
+                .document(currentUser.user.uid)
                 .get()
                 .then((DocumentSnapshot result) =>
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => HomeScreen(
-                          uid: currentUser.uid,
-                        ))))
+                        builder: (context) => HomeScreen())))
                 .catchError((err) => print(err)))
                 .catchError((err) => print(err));
 

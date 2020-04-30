@@ -7,7 +7,7 @@ import 'login.dart';
 import 'homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+void main()=>runApp(MyApp());
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -37,30 +37,27 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    FirebaseAuth.instance
-        .currentUser()
-        .then((currentUser) => {
-      if (currentUser == null)
-        {Navigator.pushReplacementNamed(context, "/login")}
-      else
-        {
-          Firestore.instance
-              .collection("users")
-              .document(currentUser.uid)
-              .get()
-              .then((DocumentSnapshot result) =>
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => HomeScreen(
-                        title: result["fname"] + "'s Tasks",
-                        uid: currentUser.uid,
-                      ))))
-              .catchError((err) => print(err))
-        }
-    })
-        .catchError((err) => print(err));
-    super.initState();
+//    FirebaseAuth.instance
+//        .currentUser()
+//        .then((currentUser) => {
+//      if (currentUser == null)
+//        {Navigator.pushReplacementNamed(context, "/login")}
+//      else
+//        {
+//          Firestore.instance
+//              .collection("users")
+//              .document(currentUser.uid)
+//              .get()
+//              .then((DocumentSnapshot result) =>
+//              Navigator.pushReplacement(
+//                  context,
+//                  MaterialPageRoute(
+//                      builder: (context) => HomeScreen())))
+//              .catchError((err) => print(err))
+//        }
+//    })
+//        .catchError((err) => print(err));
+//    super.initState();
     Timer(Duration(seconds: 5), ()=> Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (BuildContext context) => OnboardingScreen())));
   }
